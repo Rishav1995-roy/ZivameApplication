@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="loginViewModel"
+            type="com.app.zivameapplication.viewmodel.HomeViewModel" />
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/rlHeading"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="monospace"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:text="@string/gadgets"/>
+            <RelativeLayout
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/cart"
+                    android:adjustViewBounds="true"
+                    android:layout_centerVertical="true"
+                    android:scaleType="fitCenter"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:contentDescription="@string/cart" />
+                <RelativeLayout
+                    android:id="@+id/rlBadge"
+                    android:visibility="gone"
+                    android:background="@drawable/circle"
+                    android:layout_width="20dp"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_height="20dp">
+
+                    <TextView
+                        android:id="@+id/tvCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="monospace"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </RelativeLayout>
+        <View
+            android:background="@color/black"
+            android:layout_marginTop="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:layout_below="@id/rlHeading"
+            android:id="@+id/mShimmerViewContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            shimmer:duration="800">
+
+            <!-- Adding 3 rows of placeholders -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/placeholder_image" />
+                <include layout="@layout/placeholder_image" />
+                <include layout="@layout/placeholder_image" />
+                <include layout="@layout/placeholder_image" />
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+        <RelativeLayout
+            android:layout_below="@id/rlHeading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvEmptyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="monospace"
+                android:text="@string/noData"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>
