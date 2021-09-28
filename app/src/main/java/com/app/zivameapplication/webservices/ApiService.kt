@@ -15,7 +15,6 @@ class ApiService {
             successHandler: OnSuccess<ResponseType>? = null,
             errorHandler: OnException<ResponseType>? = null
         ): MutableLiveData<Response<ResponseType>> {
-
             val responseLiveData = MutableLiveData<Response<ResponseType>>()
             responseLiveData.value = Response(null, Status.LOADING)
 
@@ -29,17 +28,17 @@ class ApiService {
                         if (it.data is ResponseBody) {
                             val response = it.data
                             responseLiveData.postValue(
-                                if (successHandler == null) {
+                                if(successHandler==null){
                                     val responseBody=ResponseParser<ResponseType>()
-                                            .parseGenericResponseAndGetData(
-                                                response.toString(),
-                                                responseClassType
-                                            )
+                                        .parseGenericResponseAndGetData(
+                                            response.toString(),
+                                            responseClassType
+                                        )
                                     Response(
                                         responseBody,
                                         Status.SUCCESS,
                                     )
-                                } else {
+                                }else{
                                     successHandler.onSuccess(it)
                                 }
                             )
@@ -51,4 +50,12 @@ class ApiService {
             return responseLiveData
         }
     }
+}
+
+private fun <T> MutableLiveData<T>.postValue(any: Any?) {
+
+}
+
+private fun <T> MutableLiveData<T>.postValue(unit: Unit) {
+
 }

@@ -10,5 +10,5 @@ val price: String,
 @SerializedName("image_url")
 val image_url: String,
 @SerializedName("rating")
-val rating: String,
+val rating: Int,
 )
