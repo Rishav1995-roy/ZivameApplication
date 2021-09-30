@@ -113,7 +113,7 @@
 
         <Button
             android:id="@+id/btnAddToCart"
-            android:layout_width="150dp"
+            android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
@@ -122,7 +122,7 @@
             android:text="@string/addToCart"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="8sp" />
 
     </RelativeLayout>
 

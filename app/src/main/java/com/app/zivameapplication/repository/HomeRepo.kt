@@ -1,6 +1,7 @@
 package com.app.zivameapplication.repository
 
 import androidx.lifecycle.MutableLiveData
+import com.app.zivameapplication.model.GenericResponseModel
 import com.app.zivameapplication.model.Products
 import com.app.zivameapplication.resettableLazy
 import com.app.zivameapplication.resettableManager
@@ -15,10 +16,10 @@ object HomeRepo {
         RetrofitBuilder.build().create(HomeRequests::class.java)
     }
 
-    fun getGadgetsData(): MutableLiveData<Response<Products>> {
+    fun getGadgetsData(): MutableLiveData<Response<GenericResponseModel>> {
         return ApiService.makeApiRequest(
             homeRequests.getGadgetsData(),
-            Products::class.java
+            GenericResponseModel::class.java
         )
     }
 }

@@ -1,14 +1,15 @@
 package com.app.zivameapplication.webservices
 
 import com.google.gson.Gson
+import okhttp3.ResponseBody
 
 class ResponseParser<T> {
 
     fun parseGenericResponseAndGetData(
-        response: String,
+        response: ResponseBody,
         classType: Class<T>
     ): T {
-        return Gson().fromJson(response, classType)
+        return Gson().fromJson(response.string(), classType)
     }
 
 }

@@ -1,10 +1,14 @@
 package com.app.zivameapplication.database
 
 import android.content.Context
+import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.app.zivameapplication.model.CartModel
+
+@Database(entities = [CartModel::class],version = 1,exportSchema = false)
 
 abstract class ZivameDatabase:RoomDatabase() {
     abstract val cartDao:CartDao

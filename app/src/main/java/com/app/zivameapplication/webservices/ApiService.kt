@@ -2,7 +2,9 @@ package com.app.zivameapplication.webservices
 
 import androidx.lifecycle.MutableLiveData
 import com.app.zivameapplication.UtilsWithContext.isNetworkAvailable
+import com.google.gson.JsonElement
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 
 class ApiService {
@@ -27,20 +29,12 @@ class ApiService {
                     if (it.exception == null) {
                         if (it.data is ResponseBody) {
                             val response = it.data
+                            val responseBody=ResponseParser<ResponseType>().parseGenericResponseAndGetData(response,responseClassType)
                             responseLiveData.postValue(
-                                if(successHandler==null){
-                                    val responseBody=ResponseParser<ResponseType>()
-                                        .parseGenericResponseAndGetData(
-                                            response.toString(),
-                                            responseClassType
-                                        )
-                                    Response(
-                                        responseBody,
-                                        Status.SUCCESS,
-                                    )
-                                }else{
-                                    successHandler.onSuccess(it)
-                                }
+                                Response<ResponseType>(
+                                    responseBody,
+                                    Status.SUCCESS
+                                )
                             )
                         }
                     }
@@ -52,10 +46,3 @@ class ApiService {
     }
 }
 
-private fun <T> MutableLiveData<T>.postValue(any: Any?) {
-
-}
-
-private fun <T> MutableLiveData<T>.postValue(unit: Unit) {
-
-}

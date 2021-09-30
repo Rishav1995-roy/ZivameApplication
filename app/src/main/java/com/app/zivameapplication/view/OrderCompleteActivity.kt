@@ -3,15 +3,18 @@ package com.app.zivameapplication.view
 import android.content.Intent
 import android.os.Bundle
 import com.app.zivameapplication.BaseActivity
-import com.app.zivameapplication.R
-import kotlinx.android.synthetic.main.activity_order_complete.*
+import com.app.zivameapplication.databinding.ActivityOrderCompleteBinding
 
 class OrderCompleteActivity:BaseActivity() {
 
+    private lateinit var binding: ActivityOrderCompleteBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_order_complete)
-        btnContinue?.setOnClickListener {
+        binding= ActivityOrderCompleteBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+        binding.btnContinue.setOnClickListener {
             applicationContext.startActivity(
                 Intent(
                     applicationContext,

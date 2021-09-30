@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.app.zivameapplication.database.ZivameDatabase
 import com.app.zivameapplication.model.CartModel
-import com.app.zivameapplication.model.Products
 
 open class BaseActivity:AppCompatActivity() {
 
@@ -13,10 +12,11 @@ open class BaseActivity:AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         zivameDatabase= ZivameDatabase.getDatabase(this)
+        UtilsWithContext.init(this)
     }
 
-    fun addDataToCartTable(products: Products) {
-        zivameDatabase?.cartDao?.saveProductsDetails(products)
+    fun addDataToCartTable(cartModel: CartModel) {
+        zivameDatabase?.cartDao?.saveProductsDetails(cartModel)
     }
 
     fun deleteCartTable(){

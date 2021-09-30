@@ -3,21 +3,29 @@ package com.app.zivameapplication
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.app.zivameapplication.databinding.RecyclerItemViewBinding
+import com.app.zivameapplication.model.CartModel
 import com.app.zivameapplication.model.Products
+import com.app.zivameapplication.view.HomeActivity
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.recycler_item_view.view.*
 
-class ProductHomeItemRecyclerView(val productsList:MutableList<Products>, val context: Context, val badgeCounter:BadgeCounter):
+class ProductHomeItemRecyclerView(
+    val productsList: MutableList<Products>,
+    val context: Context,
+    val badgeCounter: BadgeCounter,
+    val homeActivity: HomeActivity,
+) :
     RecyclerView.Adapter<ProductHomeItemRecyclerView.MyViewHolder>() {
 
-    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
+    inner class MyViewHolder(val binding: RecyclerItemViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_view, parent, false)
-        return MyViewHolder(view)
+        val binding = RecyclerItemViewBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(binding)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -25,49 +33,55 @@ class ProductHomeItemRecyclerView(val productsList:MutableList<Products>, val co
         Glide.with(context)
             .load(productsList[position].image_url)
             .centerCrop()
-            .into(holder.itemView.ivProduct)
-        holder.itemView.tvname!!.setText(productsList[position].name)
-        holder.itemView.tvprice!!.setText("₹"+productsList[position].price)
-        holder.itemView.tvrating!!.setText("("+productsList[position].rating.toString()+")")
-        if(productsList[position].rating==5){
-            holder.itemView.ivfifthStar!!.setImageResource(R.drawable.fill_star)
-            holder.itemView.ivfourthStar!!.setImageResource(R.drawable.fill_star)
-            holder.itemView.ivThirdStar!!.setImageResource(R.drawable.fill_star)
-            holder.itemView.ivSecondStar!!.setImageResource(R.drawable.fill_star)
-            holder.itemView.ivfirstStar!!.setImageResource(R.drawable.fill_star)
-        }else if(productsList[position].rating==4){
-            holder.itemView.ivfifthStar!!.setImageResource(R.drawable.empty_star)
-            holder.itemView.ivfourthStar!!.setImageResource(R.drawable.fill_star)
-            holder.itemView.ivThirdStar!!.setImageResource(R.drawable.fill_star)
-            holder.itemView.ivSecondStar!!.setImageResource(R.drawable.fill_star)
-            holder.itemView.ivfirstStar!!.setImageResource(R.drawable.fill_star)
-        }else if(productsList[position].rating==3){
-            holder.itemView.ivfifthStar!!.setImageResource(R.drawable.empty_star)
-            holder.itemView.ivfourthStar!!.setImageResource(R.drawable.empty_star)
-            holder.itemView.ivThirdStar!!.setImageResource(R.drawable.fill_star)
-            holder.itemView.ivSecondStar!!.setImageResource(R.drawable.fill_star)
-            holder.itemView.ivfirstStar!!.setImageResource(R.drawable.fill_star)
-        }else if(productsList[position].rating==2){
-            holder.itemView.ivfifthStar!!.setImageResource(R.drawable.empty_star)
-            holder.itemView.ivfourthStar!!.setImageResource(R.drawable.empty_star)
-            holder.itemView.ivThirdStar!!.setImageResource(R.drawable.empty_star)
-            holder.itemView.ivSecondStar!!.setImageResource(R.drawable.fill_star)
-            holder.itemView.ivfirstStar!!.setImageResource(R.drawable.fill_star)
-        }else if(productsList[position].rating==1){
-            holder.itemView.ivfifthStar!!.setImageResource(R.drawable.empty_star)
-            holder.itemView.ivfourthStar!!.setImageResource(R.drawable.empty_star)
-            holder.itemView.ivThirdStar!!.setImageResource(R.drawable.empty_star)
-            holder.itemView.ivSecondStar!!.setImageResource(R.drawable.empty_star)
-            holder.itemView.ivfirstStar!!.setImageResource(R.drawable.fill_star)
-        }else if(productsList[position].rating==0){
-            holder.itemView.ivfifthStar!!.setImageResource(R.drawable.empty_star)
-            holder.itemView.ivfourthStar!!.setImageResource(R.drawable.empty_star)
-            holder.itemView.ivThirdStar!!.setImageResource(R.drawable.empty_star)
-            holder.itemView.ivSecondStar!!.setImageResource(R.drawable.empty_star)
-            holder.itemView.ivfirstStar!!.setImageResource(R.drawable.empty_star)
+            .into(holder.binding.ivProduct)
+        holder.binding.tvname.setText(productsList[position].name)
+        holder.binding.tvprice.setText("₹" + productsList[position].price)
+        holder.binding.tvrating.setText("(" + productsList[position].rating.toString() + ")")
+        if (productsList[position].rating == 5) {
+            holder.binding.ivfifthStar.setImageResource(R.drawable.fill_star)
+            holder.binding.ivfourthStar.setImageResource(R.drawable.fill_star)
+            holder.binding.ivThirdStar.setImageResource(R.drawable.fill_star)
+            holder.binding.ivSecondStar.setImageResource(R.drawable.fill_star)
+            holder.binding.ivfirstStar.setImageResource(R.drawable.fill_star)
+        } else if (productsList[position].rating == 4) {
+            holder.binding.ivfifthStar.setImageResource(R.drawable.empty_star)
+            holder.binding.ivfourthStar.setImageResource(R.drawable.fill_star)
+            holder.binding.ivThirdStar.setImageResource(R.drawable.fill_star)
+            holder.binding.ivSecondStar.setImageResource(R.drawable.fill_star)
+            holder.binding.ivfirstStar.setImageResource(R.drawable.fill_star)
+        } else if (productsList[position].rating == 3) {
+            holder.binding.ivfifthStar.setImageResource(R.drawable.empty_star)
+            holder.binding.ivfourthStar.setImageResource(R.drawable.empty_star)
+            holder.binding.ivThirdStar.setImageResource(R.drawable.fill_star)
+            holder.binding.ivSecondStar.setImageResource(R.drawable.fill_star)
+            holder.binding.ivfirstStar.setImageResource(R.drawable.fill_star)
+        } else if (productsList[position].rating == 2) {
+            holder.binding.ivfifthStar.setImageResource(R.drawable.empty_star)
+            holder.binding.ivfourthStar.setImageResource(R.drawable.empty_star)
+            holder.binding.ivThirdStar.setImageResource(R.drawable.empty_star)
+            holder.binding.ivSecondStar.setImageResource(R.drawable.fill_star)
+            holder.binding.ivfirstStar.setImageResource(R.drawable.fill_star)
+        } else if (productsList[position].rating == 1) {
+            holder.binding.ivfifthStar.setImageResource(R.drawable.empty_star)
+            holder.binding.ivfourthStar.setImageResource(R.drawable.empty_star)
+            holder.binding.ivThirdStar.setImageResource(R.drawable.empty_star)
+            holder.binding.ivSecondStar.setImageResource(R.drawable.empty_star)
+            holder.binding.ivfirstStar.setImageResource(R.drawable.fill_star)
+        } else if (productsList[position].rating == 0) {
+            holder.binding.ivfifthStar.setImageResource(R.drawable.empty_star)
+            holder.binding.ivfourthStar.setImageResource(R.drawable.empty_star)
+            holder.binding.ivThirdStar.setImageResource(R.drawable.empty_star)
+            holder.binding.ivSecondStar.setImageResource(R.drawable.empty_star)
+            holder.binding.ivfirstStar.setImageResource(R.drawable.empty_star)
         }
-        holder.itemView.btnAddToCart.setOnClickListener {
-            (context as BaseActivity).addDataToCartTable(productsList[position])
+        holder.binding.btnAddToCart.setOnClickListener {
+            val cartModel = CartModel(
+                name = productsList[position].name,
+                price = productsList[position].price,
+                imageUrl = productsList[position].image_url,
+                rating = productsList[position].rating,
+            )
+            homeActivity.addDataToCartTable(cartModel)
             badgeCounter.setCounter()
         }
     }

@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.zivameapplication.*
+import com.app.zivameapplication.databinding.ActivityHomeBinding
 import com.app.zivameapplication.model.CartModel
 import com.app.zivameapplication.model.Products
 import com.app.zivameapplication.repository.HomeRepo
 import com.app.zivameapplication.webservices.Status
-import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity() {
 
@@ -19,10 +19,13 @@ class HomeActivity : BaseActivity() {
     private var cartList= mutableListOf<CartModel>()
     private var productList= mutableListOf<Products>()
     private var productHomeItemRecyclerView:ProductHomeItemRecyclerView?=null
+    private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
         cartList.clear()
         badgeCounter= object : BadgeCounter {
             override fun setCounter() {
@@ -30,23 +33,15 @@ class HomeActivity : BaseActivity() {
             }
         }
         productList.clear()
-        productHomeItemRecyclerView=
-            ProductHomeItemRecyclerView(productList,applicationContext,badgeCounter!!)
-        val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
-        rvHome.layoutManager = mLayoutManager
-        rvHome.itemAnimator = DefaultItemAnimator()
-        rvHome.addItemDecoration(
-            MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16)
-        )
-        rvHome.adapter = productHomeItemRecyclerView
         if(!UtilsWithContext.isNetworkAvailable()){
             showToast("No connectivity,Please check your connection and try again.")
         }else{
             fetchDataFromServer()
         }
-        ivCart?.setOnClickListener {
+        binding.ivCart.setOnClickListener {
             launchActivity(CartActivity::class.java,true)
         }
+        setBadgeCount()
     }
 
     private fun fetchDataFromServer() {
@@ -54,17 +49,27 @@ class HomeActivity : BaseActivity() {
             when(it.status){
                 Status.SUCCESS->{
                     if(it.data != null){
-                        mShimmerViewContainer!!.stopShimmerAnimation()
-                        productList.add(it.data!!)
-                        if(productList.size>0){
-                            productHomeItemRecyclerView?.notifyDataSetChanged()
+                        binding.mShimmerViewContainer.stopShimmerAnimation()
+                        binding.mShimmerViewContainer.gone()
+                        if(it.data!!.products.size>0){
+                            productHomeItemRecyclerView=
+                                ProductHomeItemRecyclerView(it.data!!.products,applicationContext,badgeCounter!!,this)
+                            val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
+                            binding.rvHome.layoutManager = mLayoutManager
+                            binding.rvHome.itemAnimator = DefaultItemAnimator()
+                            binding.rvHome.addItemDecoration(
+                                MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL, 16)
+                            )
+                            binding.rvHome.adapter = productHomeItemRecyclerView
                         }else{
-                            rvHome?.gone()
-                            tvEmptyText?.visible()
+                            binding.rvHome.gone()
+                            binding.tvEmptyText.visible()
                         }
                     }
                 }
                 Status.FAILURE->{
+                    binding.mShimmerViewContainer.stopShimmerAnimation()
+                    binding.mShimmerViewContainer.gone()
                     showToast(getString(R.string.default_error))
                 }
                 Status.LOADING->{
@@ -76,21 +81,21 @@ class HomeActivity : BaseActivity() {
 
     public override fun onResume() {
         super.onResume()
-        mShimmerViewContainer!!.startShimmerAnimation()
+        binding.mShimmerViewContainer.startShimmerAnimation()
     }
 
     public override fun onPause() {
-        mShimmerViewContainer!!.stopShimmerAnimation()
+        binding.mShimmerViewContainer.stopShimmerAnimation()
         super.onPause()
     }
 
     private fun setBadgeCount() {
         cartList=getCartData()
         if(cartList.size>0){
-            rlBadge?.visible()
-            tvCount?.setText(cartList.size.toString())
+            binding.rlBadge.visible()
+            binding.tvCount.setText(cartList.size.toString())
         }else{
-            rlBadge?.gone()
+            binding.rlBadge.gone()
         }
     }
 }

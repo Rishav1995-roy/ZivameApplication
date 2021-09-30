@@ -10,7 +10,7 @@ import com.app.zivameapplication.model.Products
 interface CartDao {
 
     @Insert
-    fun saveProductsDetails(products: Products)
+    fun saveProductsDetails(cartModel: CartModel)
 
     @Query("DELETE FROM cart_table")
     fun deleteCartTable(): Int

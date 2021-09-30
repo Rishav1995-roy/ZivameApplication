@@ -8,6 +8,9 @@ import androidx.room.PrimaryKey
 data class CartModel(
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name="id")
+    var id:Int=0,
+
     @ColumnInfo(name = "name")
     var name:String,
     @ColumnInfo(name="price")

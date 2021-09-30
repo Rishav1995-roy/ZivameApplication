@@ -11,6 +11,6 @@
     <string name="default_error">Oops! Some thing went wrong</string>
     <string name="imageUrl">Image</string>
     <string name="star">Star</string>
-    <string name="addToCart">Add to Cart</string>
+    <string name="addToCart">Add</string>
     <string name="added">Added</string>
 </resources>
